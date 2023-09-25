@@ -23,7 +23,7 @@ const Index = () => {
     return (
         <div className="w-full bg-primary px-3 py-2 text-primary-foreground flex justify-between items-center">
             <div className="logo uppercase font-bold">Health Archive</div>
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
                 <span
                     className="cursor-pointer"
                     onClick={() => switchRole("student")}
@@ -42,7 +42,7 @@ const Index = () => {
                 >
                     Admin
                 </span>
-            </div>
+            </div> */}
             <Popover className="w-fit">
                 <PopoverTrigger>
                     <Button

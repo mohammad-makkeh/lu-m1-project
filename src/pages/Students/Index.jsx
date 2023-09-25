@@ -16,8 +16,17 @@ import {
     TableRow,
 } from "@/components/table";
 import StudentForm from "./StudentForm";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { apiUrl } from "@/helpers/api";
 
 export default function Index() {
+
+    const professorsQuery = useQuery(['professors-list'], () => {
+        axios.get(apiUrl + "/professors-list")
+    })
+
+
     return (
         <div>
             <div className="flex items-center justify-between">
@@ -33,7 +42,7 @@ export default function Index() {
                                 Add New Student
                             </DialogTitle>
                         </DialogHeader>
-                        <StudentForm/>
+                        <StudentForm professorsQuery={professorsQuery}/>
                     </DialogContent>
                 </Dialog>
             </div>

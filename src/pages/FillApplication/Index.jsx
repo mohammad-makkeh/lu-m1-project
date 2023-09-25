@@ -27,6 +27,7 @@ const Index = () => {
     const onSubmit = async (fv) => {
         fv.fname = user.fname;
         fv.lname = user.lname;
+        fv.sId = user.sId;
         const res = await submit.mutateAsync(fv);
         window.location.href = '/my-applications'
     };
