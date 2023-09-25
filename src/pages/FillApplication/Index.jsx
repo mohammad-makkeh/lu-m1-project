@@ -3,11 +3,15 @@ import { Combobox } from "@/components/Combobox";
 import { Form } from "@/components/Form";
 import FormGroupCard from "@/components/FormGroupCard";
 import { Input } from "@/components/Input";
+import RotatingLoader from "@/components/RotatingLoader";
+import { apiUrl } from "@/helpers/api";
 import toLabelValue from "@/helpers/toLabelValue";
 import useAlreadyFilled from "@/hooks/useAlreadyFilled";
 import useAuth from "@/hooks/useAuth";
+import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 
 const Index = () => {
     const user = useAuth();
@@ -16,8 +20,15 @@ const Index = () => {
 
     const form = useForm();
 
-    const onSubmit = (fv) => {
-        console.log(fv);
+    const submit = useMutation((data) => {
+        return axios.get(apiUrl + "/application-submit", data);
+    });
+
+    const onSubmit = async (fv) => {
+        fv.fname = user.fname;
+        fv.lname = user.lname;
+        const res = await submit.mutateAsync(fv);
+        window.location.href = '/my-applications'
     };
 
     if (alreadyFilled) {
@@ -45,7 +56,7 @@ const Index = () => {
                                 <Combobox
                                     form={form}
                                     label={"Resident Name"}
-                                    name="residentName"
+                                    name="pgy"
                                     items={[
                                         {
                                             label: "PGY1",
@@ -203,7 +214,7 @@ const Index = () => {
                                 <Combobox
                                     form={form}
                                     label={"Incidents"}
-                                    name="incidents"
+                                    name="incident"
                                     items={toLabelValue([
                                         "None",
                                         "Difficult Airway",
@@ -237,12 +248,12 @@ const Index = () => {
                             <div className={"grid grid-cols-4 gap-5"}>
                                 <Input
                                     label="Age(Years/Month)"
-                                    {...form.register("age")}
+                                    {...form.register("patientAge")}
                                 />
                                 <Combobox
                                     form={form}
                                     label={"Sex"}
-                                    name="sex"
+                                    name="patientGender"
                                     items={toLabelValue(["Male", "Female"])}
                                 />
 
@@ -288,8 +299,8 @@ const Index = () => {
 
                                 <Combobox
                                     form={form}
-                                    label={"Regioal Anesthesia"}
-                                    name="regioalAnesthesia"
+                                    label={"Regional Anesthesia"}
+                                    name="regionalAnesthesia"
                                     items={toLabelValue([
                                         "Spinal",
                                         "Epidural Lumbar",
@@ -343,10 +354,19 @@ const Index = () => {
                             </div>
                         </FormGroupCard>
                     </div>
-                    
-                    <textarea {...form.register("notes")} placeholder="Any extra notes..." className="rounded border w-full mt-4 p-2"></textarea>
+
+                    <textarea
+                        {...form.register("notes")}
+                        placeholder="Any extra notes..."
+                        className="rounded border w-full mt-4 p-2"
+                    ></textarea>
                     <br />
-                    <Button className="float-right mt-4">Submit</Button>
+                    <Button className="float-right mt-4">
+                        <div className="flex items-center gap-2">
+                            {submit.isLoading && <RotatingLoader />}
+                            Submit
+                        </div>
+                    </Button>
                 </form>
             </Form>
         </div>
