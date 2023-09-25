@@ -13,7 +13,7 @@ const StudentForm = ({ professorsQuery }) => {
     const form = useForm();
 
     const create = useMutation((data) => {
-        return axios.post(apiUrl + "/student-create", data);
+        return axios.post(apiUrl + "/registerStudent", data);
     });
 
     const onSubmit = (fv) => {
