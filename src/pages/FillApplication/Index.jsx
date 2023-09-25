@@ -21,7 +21,7 @@ const Index = () => {
     const form = useForm();
 
     const submit = useMutation((data) => {
-        return axios.get(apiUrl + "/application-submit", data);
+        return axios.post(apiUrl + "/submit", data);
     });
 
     const onSubmit = async (fv) => {
