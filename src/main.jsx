@@ -9,6 +9,7 @@ import routes from "./routes";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 import { QueryClient, QueryClientProvider } from "react-query";
+import NotFound from "./pages/NotFound";
 
 export const Main = () => {
     const user = useAuth();
@@ -32,6 +33,7 @@ export const Main = () => {
             <div className="h-screen">
                 <BrowserRouter>
                     <Routes>
+                        <Route path='*' element={<NotFound />} />
                         <Route element={<MainLayout />}>
                             {getRoutesByRole(user?.role)}
                         </Route>

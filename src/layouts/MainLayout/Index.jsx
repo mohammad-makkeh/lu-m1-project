@@ -1,9 +1,18 @@
 import Sidebar from "@/components/Sidebar/Index";
 import TopBar from "@/components/TopBar/Index";
+import useAuth from "@/hooks/useAuth";
 import { Outlet } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
 const Index = () => {
+
+    const user = useAuth();
+
+
+    if(!user) {
+        window.location.pathname="/login";
+    }
+
     return (
         <div className=" h-full">
             <TopBar />
