@@ -33,7 +33,7 @@ const routes = [
         name: "Students",
         path: "/students",
         icon: "fa-solid fa-graduation-cap",
-        roles: ["professor"],
+        roles: ["admin"],
         page: Students
     },
     {
