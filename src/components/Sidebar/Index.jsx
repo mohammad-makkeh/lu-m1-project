@@ -16,7 +16,7 @@ const Sidebar = ({ className }) => {
     const activeClassName = "!bg-accent !text-accent-foreground";
 
     return (
-        <div className={cn(className ?? "", "border-r h-full py-1")}>
+        <div className={cn(className ?? "", "border-r h-full py-1 min-w-fit")}>
             {routes
                 .filter((route) => !route.roles || route.roles.includes(user.role))
                 .map((route) => (

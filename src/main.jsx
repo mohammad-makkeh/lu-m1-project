@@ -8,6 +8,7 @@ import MainLayout from "@/layouts/MainLayout";
 import routes from "./routes";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 export const Main = () => {
     const user = useAuth();
@@ -27,16 +28,18 @@ export const Main = () => {
 
     return (
         <React.StrictMode>
+            <QueryClientProvider client={new QueryClient()}>
             <div className="h-screen">
                 <BrowserRouter>
                     <Routes>
                         <Route element={<MainLayout />}>
-                            {getRoutesByRole(user.role)}
+                            {getRoutesByRole(user?.role)}
                         </Route>
                         <Route path="/login" element={<Login />} />
                     </Routes>
                 </BrowserRouter>
             </div>
+            </QueryClientProvider>
         </React.StrictMode>
     );
 };

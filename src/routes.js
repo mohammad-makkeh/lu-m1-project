@@ -25,7 +25,7 @@ const routes = [
         name: "Students Applications",
         path: "/",
         icon: "fa-solid fa-file-lines",
-        roles: ["doctor", "admin"],
+        roles: ["professor", "admin"],
         page: AllStudentsApplications
 
     },
@@ -33,12 +33,12 @@ const routes = [
         name: "Students",
         path: "/students",
         icon: "fa-solid fa-graduation-cap",
-        roles: ["doctor","admin"],
+        roles: ["professor"],
         page: Students
     },
     {
         name: "Doctors",
-        path: "/doctors",
+        path: "/professor",
         icon: "fa-solid fa-user-tie",
         roles: ["admin"],
         page: Doctors

@@ -9,9 +9,8 @@ const Index = () => {
             <TopBar />
             <div className="flex h-full">
                 <Sidebar />
-                <div className="px-3 py-2">
-
-                <Outlet />
+                <div className="px-3 py-2 w-full overflow-auto custom-scrollbar max-h-[94vh]">
+                    <Outlet />
                 </div>
             </div>
         </div>
