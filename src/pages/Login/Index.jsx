@@ -12,23 +12,19 @@ export default function Login() {
     const form = useForm();
 
     const submit = useMutation((data) => {
-        return axios.post(apiUrl + "/login", data);
+        return axios.get(apiUrl + "/login?username="+ data.username+ "&password="+data.password);
     });
 
     const [loginError, setLoginError] = useState("");
     const onSubmit = async (fv) => {
-        // const res = await submit.mutateAsync(fv);
-        // const loginRes = await res.json();
-        // if (loginRes.validLogin === "Y") {
+        const res = await submit.mutateAsync(fv);      
+        if (res.data.validLogin === "Y") {
             localStorage.setItem(
                 "user",
-                JSON.stringify({
-                    username: "fatima",
-                    role: "admin",
-                })
+                JSON.stringify(res.data)
             );
             return (window.location.pathname = "/");
-        // } else return setLoginError("Login or password are invalid");
+        } else return setLoginError("Login or password are invalid");
     };
 
     return (
