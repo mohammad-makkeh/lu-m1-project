@@ -17,9 +17,38 @@ import RotatingLoader from "@/components/RotatingLoader";
 const MyApplications = () => {
     const user = useAuth();
 
-    const { data, isLoading } = useQuery(["student-applications-list"], () => {
-        return axios.get(apiUrl + "/applications-list?stdId=" + user?.id);
-    });
+    const { data, isLoading } = useQuery(
+        ["student-applications-list", user?.id],
+        () => {
+            return axios.get(
+                apiUrl + "/applications-list?studentId=" + user?.id
+            );
+        }
+    );
+
+    const columns = [
+        "Resident",
+        "Hospital",
+        "Priority",
+        "Procedure",
+        "Incident",
+        "Date",
+    ];
+
+    const getColumns = () =>
+        columns.map((col, i) => <TableHead key={i}>{col}</TableHead>);
+
+    const getRows = () =>
+        data.map((row, i) => (
+            <TableRow key={i}>
+                <TableCell>{row.pgy}</TableCell>
+                <TableCell>{row.hospital}</TableCell>
+                <TableCell>{row.priority}</TableCell>
+                <TableCell>{row.procedures}</TableCell>
+                <TableCell>{row.incidents}</TableCell>
+                <TableCell>{row.date}</TableCell>
+            </TableRow>
+        ));
 
     return (
         <div>
@@ -30,25 +59,9 @@ const MyApplications = () => {
                 <Table>
                     <TableCaption>A list of all students</TableCaption>
                     <TableHeader>
-                        <TableRow>
-                            <TableHead className="">Invoice</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Method</TableHead>
-                            <TableHead className="text-right">Amount</TableHead>
-                        </TableRow>
+                        <TableRow>{getColumns()}</TableRow>
                     </TableHeader>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell className="font-medium">
-                                INV001
-                            </TableCell>
-                            <TableCell>Paid</TableCell>
-                            <TableCell>Credit Card</TableCell>
-                            <TableCell className="text-right">
-                                $250.00
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
+                    <TableBody>{getRows()}</TableBody>
                 </Table>
             )}
         </div>

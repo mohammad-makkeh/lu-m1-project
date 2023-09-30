@@ -56,7 +56,7 @@ const StudentForm = ({ professorsQuery }) => {
                             form={form}
                             label={"Resident Name"}
                             name="professorId"
-                            items={professorsQuery.map((p) => ({
+                            items={professorsQuery.data?.map((p) => ({
                                 label: p.username,
                                 value: p.professorId,
                             }))}
