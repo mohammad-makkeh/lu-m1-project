@@ -39,16 +39,18 @@ const MyApplications = () => {
         columns.map((col, i) => <TableHead key={i}>{col}</TableHead>);
 
     const getRows = () =>
-        data.map((row, i) => (
-            <TableRow key={i}>
-                <TableCell>{row.pgy}</TableCell>
-                <TableCell>{row.hospital}</TableCell>
-                <TableCell>{row.priority}</TableCell>
-                <TableCell>{row.procedures}</TableCell>
-                <TableCell>{row.incidents}</TableCell>
-                <TableCell>{row.date}</TableCell>
-            </TableRow>
-        ));
+        data
+            ? data.map((row, i) => (
+                  <TableRow key={i}>
+                      <TableCell>{row.pgy}</TableCell>
+                      <TableCell>{row.hospital}</TableCell>
+                      <TableCell>{row.priority}</TableCell>
+                      <TableCell>{row.procedures}</TableCell>
+                      <TableCell>{row.incidents}</TableCell>
+                      <TableCell>{row.date}</TableCell>
+                  </TableRow>
+              ))
+            : "No results";
 
     return (
         <div>
