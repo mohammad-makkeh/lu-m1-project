@@ -11,13 +11,13 @@ import { useMutation, useQuery } from "react-query";
 
 const StudentForm = ({ professorsQuery }) => {
     const form = useForm();
-
+    console.log(professorsQuery.data);
     const create = useMutation((data) => {
         return axios.post(apiUrl + "/registerStudent", data);
     });
 
-    const onSubmit = (fv) => {
-        console.log(fv);
+    const onSubmit = async (fv) => {
+        await create.mutateAsync(fv)
     };
 
     return (
@@ -26,6 +26,22 @@ const StudentForm = ({ professorsQuery }) => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-3"
             >
+                <div className="grid grid-cols-2 gap-2 items-center">
+                    {professorsQuery.isLoading ? (
+                        <RotatingLoader />
+                    ) : (
+                        <Combobox
+                            form={form}
+                            label={"Professor"}
+                            name="professorId"
+                            className={"z-50 pointer-events-auto"}
+                            items={professorsQuery.data?.data?.map((p) => ({
+                                label: p.username,
+                                value: p.professorId,
+                            }))}
+                        />
+                    )}
+                </div>
                 <div className="grid grid-cols-2 gap-2 items-center">
                     <Input label="First Name" {...form.register("fname")} />
                     <Input label="Last Name" {...form.register("lname")} />
@@ -48,28 +64,13 @@ const StudentForm = ({ professorsQuery }) => {
                         {...form.register("academicYear")}
                     />
                 </div>
-                <div className="grid grid-cols-2 gap-2 items-center">
-                    {professorsQuery.isLoading ? (
-                        <RotatingLoader />
-                    ) : (
-                        <Combobox
-                            form={form}
-                            label={"Resident Name"}
-                            name="professorId"
-                            items={professorsQuery.data?.map((p) => ({
-                                label: p.username,
-                                value: p.professorId,
-                            }))}
-                        />
-                    )}
 
-                    <Button>
-                        <div className="flex items-center gap-2">
-                            {create.isLoading && <RotatingLoader />}
-                            Create
-                        </div>
-                    </Button>
-                </div>
+                <Button>
+                    <div className="flex items-center gap-2">
+                        {create.isLoading && <RotatingLoader />}
+                        Create
+                    </div>
+                </Button>
             </form>
         </Form>
     );

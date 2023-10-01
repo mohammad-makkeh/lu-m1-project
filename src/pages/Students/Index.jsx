@@ -19,13 +19,40 @@ import StudentForm from "./StudentForm";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { apiUrl } from "@/helpers/api";
+import RotatingLoader from "@/components/RotatingLoader";
 
 export default function Index() {
+    const { data, isLoading } = useQuery(["student-list"], () => {
+        return axios.get(apiUrl + "/students");
+    });
 
-    const professorsQuery = useQuery(['professors-list'], () => {
-        axios.get(apiUrl + "/professors-list")
-    })
+    const professorsQuery = useQuery(["professors-list"], () => {
+        return axios.get(apiUrl + "/professors-list");
+    });
 
+    const columns = [
+        "Student Code",
+        "First Name",
+        "Last Name",
+        "Email",
+        "Academic Year"
+    ];
+
+    const getColumns = () =>
+        columns.map((col, i) => <TableHead key={i}>{col}</TableHead>);
+
+    const getRows = () =>
+        data?.data
+            ? data.data.map((row, i) => (
+                  <TableRow key={i}>
+                      <TableCell>{row.studentCode}</TableCell>
+                      <TableCell>{row.fname}</TableCell>
+                      <TableCell>{row.lname}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.academicYear}</TableCell>
+                  </TableRow>
+              ))
+            : "No results";
 
     return (
         <div>
@@ -42,28 +69,22 @@ export default function Index() {
                                 Add New Student
                             </DialogTitle>
                         </DialogHeader>
-                        <StudentForm professorsQuery={professorsQuery}/>
+                        <StudentForm professorsQuery={professorsQuery} />
                     </DialogContent>
                 </Dialog>
             </div>
             <Table>
                 <TableCaption>A list of all students</TableCaption>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="">Invoice</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Method</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    <TableRow>
-                        <TableCell className="font-medium">INV001</TableCell>
-                        <TableCell>Paid</TableCell>
-                        <TableCell>Credit Card</TableCell>
-                        <TableCell className="text-right">$250.00</TableCell>
-                    </TableRow>
-                </TableBody>
+                {isLoading ? (
+                    <RotatingLoader />
+                ) : (
+                    <>
+                        <TableHeader>
+                            <TableRow>{getColumns()}</TableRow>
+                        </TableHeader>
+                        <TableBody>{getRows()}</TableBody>
+                    </>
+                )}
             </Table>
         </div>
     );

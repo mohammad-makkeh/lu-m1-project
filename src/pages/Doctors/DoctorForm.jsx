@@ -12,11 +12,11 @@ const DoctorForm = () => {
     const form = useForm();
 
     const create = useMutation((data) => {
-        return axios.post(apiUrl + "/doctor-create", data);
+        return axios.post(apiUrl + "/registerDoctor", data);
     });
 
-    const onSubmit = (fv) => {
-        console.log(fv);
+    const onSubmit =async  (fv) => {
+        await create.mutateAsync(fv);
     };
 
     return (
@@ -29,23 +29,13 @@ const DoctorForm = () => {
                     <Input label="First Name" {...form.register("fname")} />
                     <Input label="Last Name" {...form.register("lname")} />
                 </div>
-                <div className="grid grid-cols-2 gap-2 items-center">
-                    <Input label="Email" {...form.register("email")} />
-                    <Input
-                        label="Student Code(University Id)"
-                        {...form.register("studentCode")}
-                    />
-                </div>
+
                 <div className="grid grid-cols-2 gap-2 items-center">
                     <Input label="Username" {...form.register("username")} />
                     <Input label="Password" {...form.register("password")} />
                 </div>
                 <div className="grid grid-cols-2 gap-2 items-center">
-                    <Input label="Major" {...form.register("major")} />
-                    <Input
-                        label="Academic Year"
-                        {...form.register("academicYear")}
-                    />
+                    <Input label="Email" {...form.register("email")} />
                 </div>
 
                 <Button>

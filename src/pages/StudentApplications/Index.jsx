@@ -39,8 +39,8 @@ const MyApplications = () => {
         columns.map((col, i) => <TableHead key={i}>{col}</TableHead>);
 
     const getRows = () =>
-        data
-            ? data.map((row, i) => (
+        data?.data
+            ? data.data.map((row, i) => (
                   <TableRow key={i}>
                       <TableCell>{row.pgy}</TableCell>
                       <TableCell>{row.hospital}</TableCell>
@@ -59,7 +59,7 @@ const MyApplications = () => {
                 <RotatingLoader />
             ) : (
                 <Table>
-                    <TableCaption>A list of all students</TableCaption>
+                    <TableCaption>A list of your applications</TableCaption>
                     <TableHeader>
                         <TableRow>{getColumns()}</TableRow>
                     </TableHeader>

@@ -29,7 +29,6 @@ const Index = () => {
         fv.lname = user.lname;
         fv.studentId = user.id;
         const res = await submit.mutateAsync(fv);
-        window.location.href = '/my-applications'
     };
 
     if (alreadyFilled) {
