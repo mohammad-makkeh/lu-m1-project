@@ -6,18 +6,10 @@ import Button from "../Button";
 const Index = () => {
     const user = useAuth();
 
-    const switchRole = (newRole) => {
-        if (newRole === user.role) return;
-        localStorage.setItem(
-            "user",
-            JSON.stringify({ ...user, role: newRole })
-        );
-        window.location.pathname = "/";
-    };
 
     const logout = () => {
         localStorage.removeItem("user");
-        window.location.pathname = "/";
+        window.location.pathname = "/login";
     };
 
     return (

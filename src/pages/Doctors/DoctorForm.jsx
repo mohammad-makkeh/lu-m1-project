@@ -8,14 +8,22 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 
-const DoctorForm = () => {
+const DoctorForm = ({ refetch, close }) => {
     const form = useForm();
 
-    const create = useMutation((data) => {
-        return axios.post(apiUrl + "/registerDoctor", data);
-    });
+    const create = useMutation(
+        (data) => {
+            return axios.post(apiUrl + "/registerDoctor", data);
+        },
+        {
+            onSuccess: () => {
+                refetch();
+                close();
+            },
+        }
+    );
 
-    const onSubmit =async  (fv) => {
+    const onSubmit = async (fv) => {
         await create.mutateAsync(fv);
     };
 

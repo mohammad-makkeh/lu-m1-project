@@ -15,6 +15,7 @@ const StudentForm = ({ professorsQuery }) => {
     const create = useMutation((data) => {
         return axios.post(apiUrl + "/registerStudent", data);
     });
+    
 
     const onSubmit = async (fv) => {
         await create.mutateAsync(fv)

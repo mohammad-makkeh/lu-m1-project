@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
     Table,
@@ -14,20 +14,15 @@ import axios from "axios";
 import { apiUrl } from "@/helpers/api";
 import useAuth from "@/hooks/useAuth";
 import RotatingLoader from "@/components/RotatingLoader";
+import { Input } from "@/components/Input";
 const MyApplications = () => {
     const user = useAuth();
 
-    const { data, isLoading } = useQuery(
-        ["student-applications-list"],
-        () => {
-            return axios.get(
-                apiUrl + "/applications-list"
-            );
-        }
-    );
+    const { data, isLoading } = useQuery(["student-applications-list"], () => {
+        return axios.get(apiUrl + "/applications-list");
+    });
 
     const columns = [
-        "Student Code",
         "Student First Name",
         "Student Last Name",
         "Resident",
@@ -41,18 +36,29 @@ const MyApplications = () => {
     const getColumns = () =>
         columns.map((col, i) => <TableHead key={i}>{col}</TableHead>);
 
+    const [filterSearch, setFilterSearch] = useState("");
+
+    const filter = () => {
+        return data?.data?.filter((row) =>
+            row.hospital?.toLowerCase()?.includes(filterSearch?.toLowerCase()) ||
+            row.firstName?.toLowerCase()?.includes(filterSearch?.toLowerCase()) ||
+            row.lastName?.toLowerCase()?.includes(filterSearch?.toLowerCase()) ||
+            row.priority?.toLowerCase()?.includes(filterSearch?.toLowerCase())
+        );
+    };
+
     const getRows = () =>
         data?.data
-            ? data.data.map((row, i) => (
+            ? filter(data.data).map((row, i) => (
                   <TableRow key={i}>
-                    {/* we need this api to return the student info */}
-                      <TableCell>{"needs fixing"}</TableCell>
-                      <TableCell>{"needs fixing"}</TableCell>
-                      <TableCell>{"needs fixing"}</TableCell>
+                      {/* we need this api to return the student info */}
+                      <TableCell>{row.firstName}</TableCell>
+                      <TableCell>{row.lastName}</TableCell>
+                      <TableCell>{row.pgy}</TableCell>
                       <TableCell>{row.hospital}</TableCell>
                       <TableCell>{row.priority}</TableCell>
                       <TableCell>{row.procedures}</TableCell>
-                      <TableCell>{row.incidents}</TableCell>
+                      <TableCell>{row.incident}</TableCell>
                       <TableCell>{row.date}</TableCell>
                   </TableRow>
               ))
@@ -64,13 +70,22 @@ const MyApplications = () => {
             {isLoading ? (
                 <RotatingLoader />
             ) : (
-                <Table>
-                    <TableCaption>A list of student applications</TableCaption>
-                    <TableHeader>
-                        <TableRow>{getColumns()}</TableRow>
-                    </TableHeader>
-                    <TableBody>{getRows()}</TableBody>
-                </Table>
+                <div className="flex flex-col gap-4">
+                    <Input
+                        value={filterSearch}
+                        onChange={(e) => setFilterSearch(e.target.value)}
+                        placeholder="Filter by firstname, lastname, hospital, priority..."
+                    />
+                    <Table>
+                        <TableCaption>
+                            A list of student applications
+                        </TableCaption>
+                        <TableHeader>
+                            <TableRow>{getColumns()}</TableRow>
+                        </TableHeader>
+                        <TableBody>{getRows()}</TableBody>
+                    </Table>
+                </div>
             )}
         </div>
     );

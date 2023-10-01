@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Button from "@/components/Button";
 import {
@@ -27,7 +27,7 @@ const Doctors = () => {
 
 
 
-    const { data, isLoading } = useQuery(["doctors-list"], () => {
+    const { data, isLoading, refetch } = useQuery(["doctors-list"], () => {
         return axios.get(apiUrl + "/professors-list");
     });
 
@@ -52,11 +52,13 @@ const Doctors = () => {
               ))
             : "No results";
 
+                const [isOpen, setIsOpen] = useState(false);
+
     return (
         <div>
             <div className="flex items-center justify-between">
                 <h1 className="text-lg mb-2">All Professors</h1>
-                <Dialog>
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
                     <DialogTrigger>
                         <Button> Add Professor </Button>
                     </DialogTrigger>
@@ -67,7 +69,7 @@ const Doctors = () => {
                                 Add New Professor
                             </DialogTitle>
                         </DialogHeader>
-                        <DoctorForm />
+                        <DoctorForm refetch={refetch} close={() => setIsOpen(false)}/>
                     </DialogContent>
                 </Dialog>
             </div>

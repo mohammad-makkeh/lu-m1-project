@@ -21,10 +21,11 @@ const MyApplications = () => {
         ["student-applications-list", user?.id],
         () => {
             return axios.get(
-                apiUrl + "/applications-list?studentId=" + user?.id
+                apiUrl + "/applications-list-filtered?studentId=" + user?.id
             );
         }
     );
+    
 
     const columns = [
         "Resident",
@@ -46,7 +47,7 @@ const MyApplications = () => {
                       <TableCell>{row.hospital}</TableCell>
                       <TableCell>{row.priority}</TableCell>
                       <TableCell>{row.procedures}</TableCell>
-                      <TableCell>{row.incidents}</TableCell>
+                      <TableCell>{row.incident}</TableCell>
                       <TableCell>{row.date}</TableCell>
                   </TableRow>
               ))
